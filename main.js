@@ -1,23 +1,10 @@
+import { apiDeleteTodos, apiGetTodos, apiPostTodos } from "./api.js";
+
 let tasks = [];
-const host = "https://webdev-hw-api.vercel.app/api/v2/todos";
 let token = "Bearer asb4c4boc89kbocw6gasb4c4boc86g9kbocwasc0bodg"
 
 const fetchTodosAndRender = () => {
-    return fetch(host, {
-        method: "GET",
-        headers: {
-            Authorization: token
-        }
-    })
-        .then((response) => {
-            if (response.status === 401) {
-                // token = prompt('Введите правильный пароль')
-                // fetchTodosAndRender()
-                throw new Error('Неверный пароль')
-            } else {
-                return response.json();
-            }
-        })
+    return apiGetTodos({ token })
         .then((responseData) => {
             tasks = responseData.todos;
             renderApp();
@@ -94,15 +81,7 @@ const renderApp = () => {
             const id = deleteButton.dataset.id;
 
             // Подписываемся на успешное завершение запроса с помощью then
-            fetch("https://webdev-hw-api.vercel.app/api/todos/" + id, {
-                method: "DELETE",
-                headers: {
-                    Authorization: token,
-                }
-            })
-                .then((response) => {
-                    return response.json();
-                })
+            apiDeleteTodos({ token, id })
                 .then((responseData) => {
                     // Получили данные и рендерим их в приложении
                     tasks = responseData.todos;
@@ -121,18 +100,7 @@ const renderApp = () => {
         buttonElement.textContent = "Задача добавляется...";
 
         // Подписываемся на успешное завершение запроса с помощью then
-        fetch(host, {
-            method: "POST",
-            headers: {
-                Authorization: token,
-            },
-            body: JSON.stringify({
-                text: textInputElement.value,
-            }),
-        })
-            .then((response) => {
-                return response.json();
-            })
+        apiPostTodos({ token, text: textInputElement.value })
             .then(() => {
                 // TODO: кинуть исключение
                 textInputElement.value = "";
