@@ -48,4 +48,18 @@ function apiPostTodos({ token, text }) {
         })
 }
 
-export { apiGetTodos, apiDeleteTodos, apiPostTodos }
+//API login
+function apiLogin({ login, password }) {
+    return fetch("https://webdev-hw-api.vercel.app/api/user/login", {
+        method: "POST",
+        body: JSON.stringify({
+            login,
+            password,
+        }),
+    })
+        .then((response) => {
+            return response.json()
+        })
+}
+
+export { apiGetTodos, apiDeleteTodos, apiPostTodos, apiLogin }

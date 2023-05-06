@@ -1,3 +1,5 @@
+import { apiLogin } from "../api.js";
+
 function renderLoginComponent({ appEl, setToken, fetchTodosAndRender }) {
     const appHtml = `
     <div class="form">
@@ -15,7 +17,17 @@ function renderLoginComponent({ appEl, setToken, fetchTodosAndRender }) {
     appEl.innerHTML = appHtml;
     const loginButton = document.getElementById("join-button").addEventListener("click", () => {
         setToken("Bearer asb4c4boc89kbocw6gasb4c4boc86g9kbocwasc0bodg")
-        fetchTodosAndRender()
+        apiLogin({
+            login: 'admin',
+            password: 'admin',
+        })
+            .then((user) => {
+                console.log(user);
+                setToken(`Bearer ${user.user.token}`)
+                fetchTodosAndRender()
+            })
+
+
     })
 }
 
