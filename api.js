@@ -66,4 +66,23 @@ function apiLogin({ login, password }) {
         })
 }
 
-export { apiGetTodos, apiDeleteTodos, apiPostTodos, apiLogin }
+//API registration
+function apiRegister({ name, login, password }) {
+    return fetch("https://webdev-hw-api.vercel.app/api/user", {
+        method: "POST",
+        body: JSON.stringify({
+            name,
+            login,
+            password,
+        })
+    })
+        .then((response) => {
+            if (response.status === 400) {
+                throw new Error("Такой логин уже существует")
+            } else {
+                return response.json()
+            }
+        })
+}
+
+export { apiGetTodos, apiDeleteTodos, apiPostTodos, apiLogin, apiRegister }
