@@ -58,7 +58,11 @@ function apiLogin({ login, password }) {
         }),
     })
         .then((response) => {
-            return response.json()
+            if (response.status === 400) {
+                throw new Error("Неверный логин или пароль")
+            } else {
+                return response.json()
+            }
         })
 }
 
