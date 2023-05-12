@@ -1,5 +1,7 @@
 import { apiDeleteTodos, apiGetTodos, apiPostTodos } from "./api.js";
 import { renderLoginComponent } from "./components/login-component.js"
+import { formatDateToRu, formatDateToEn } from "./lib/formatDate/formatDate.js";
+import { format } from "date-fns";
 
 let tasks = [];
 let token = "Bearer asb4c4boc89kbocw6gasb4c4boc86g9kbocwasc0bodg"
@@ -28,6 +30,7 @@ const renderApp = () => {
         return;
     }
 
+    const country = 'ru';
     const tasksHtml = tasks
         .map((task) => {
             return `
@@ -37,6 +40,7 @@ const renderApp = () => {
           <button data-id="${task.id}" class="button delete-button">Удалить</button>
         </p>
         <p>Создал: ${task.user?.name ?? "Неизвестно"}</p>
+        <p> <i>Задача создана: ${format(new Date(task.created_at), 'dd/MM/yy hh:mm')} </i> </p>
       </li>`;
         })
         .join("");
